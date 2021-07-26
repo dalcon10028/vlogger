@@ -7,7 +7,7 @@ const BLOG_NAME = "daycare-center";
 (async () => {
   try {
     const browser = await puppeteer.launch({
-        headless : false
+
     });
     const page = await browser.newPage();
     await page.setViewport({
