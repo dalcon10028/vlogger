@@ -20,7 +20,7 @@ const BLOG_NAME = "daycare-center";
     
     let pubList = [];
     rss_parser(html, (err, result) => {
-      if (err) console.log(err);
+      if (err) console.error(err);
       const items = result.rss.channel[0].item;
       pubList = items.filter((item) => {
         const now = new Date();
@@ -29,17 +29,18 @@ const BLOG_NAME = "daycare-center";
         return itemDate.toDateString() === yesterday.toDateString();
       });
     });
-    console.log(pubList);
+    // console.log(pubList);
     if (pubList.length === 0) {
       await page.screenshot({ path: `./log/${new Date().getTime()}.png` });
-      await browser.close();
       return ;
     }
-    for (const pubItem of pubList)
-      await main(page, pubItem);
+    await Promise.all(pubList.map(pubItem => main(page, pubItem)));
   }
   catch(error) {
-    console.log(error);
+    console.error(error);
+  }
+  finally {
+    process.exit();
   }
 })();
 
@@ -82,9 +83,10 @@ const main = async (page, pubItem) => {
     await page.click('button.btn.btn-default');
     await page.waitForTimeout(1000);
     await page.click('button[type="submit"]');
+    await page.waitForNavigation();
     await page.screenshot({ path: `./log/${new Date().getTime()}.png` });
-    return;
+    return page;
   } catch (error) {
-    console.log(`출간 에러 ${error}`);
+    throw `출간 에러 ${error}`;
   }
 }

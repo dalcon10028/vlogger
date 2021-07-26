@@ -1,0 +1,1 @@
+npm start && git add . && git commit -m '자동 실행 결과 업데이트' && git push origin puppeteer
