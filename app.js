@@ -7,7 +7,11 @@ const BLOG_NAME = "daycare-center";
 (async () => {
   try {
     const browser = await puppeteer.launch({
+<<<<<<< HEAD
 
+=======
+        // headless : false
+>>>>>>> b58330c70864de6ed89f2a5e2770e8d7532ee0b1
     });
     const page = await browser.newPage();
     await page.setViewport({
